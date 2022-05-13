@@ -3,21 +3,22 @@ type QueueItem = () => Promise<void>
 export default class Typewriter {
   
   deletingSpeed: number;
-  element: HTMLElement;
+  #element: HTMLElement;
   loop: boolean;
   #queue: QueueItem[] = []
   typingSpeed: number;
 
   constructor(
-    element: HTMLElement,
+    parent: HTMLElement,
     { 
       deletingSpeed = 50, 
       loop = false, 
       typingSpeed = 50
     } = {}
   ) {
+    this.#element = document.createElement("div")
+    parent.append(this.#element)
     this.deletingSpeed = deletingSpeed;
-    this.element = element;
     this.loop = loop;
     this.typingSpeed = typingSpeed;
   }
