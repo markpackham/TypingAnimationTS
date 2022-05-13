@@ -17,7 +17,6 @@ export default class Typewriter {
     } = {}
   ) {
     this.#element = document.createElement("div")
-    this.#element.classList.add("whitespace");
     parent.append(this.#element)
     this.#deletingSpeed = deletingSpeed;
     this.#loop = loop;

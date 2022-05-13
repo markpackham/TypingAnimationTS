@@ -2,7 +2,7 @@ import "./style.css"
 import Typewriter from "./Typewriter"
 
 const typewriter = new Typewriter(
-  document.body, {loop:true}
+  document.querySelector(".whitespace") as HTMLDivElement, {loop:true}
 )
 
 typewriter
