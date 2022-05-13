@@ -80,6 +80,7 @@ export default class Typewriter {
     this.#addToQueue(resolve => {
       setTimeout(resolve,duration)
     })
+    return this
   }
 
 
