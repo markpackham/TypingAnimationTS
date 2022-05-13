@@ -1,15 +1,43 @@
 export default class Typewriter {
+  
+  deletingSpeed: number;
   element: HTMLElement;
   loop: boolean;
   typingSpeed: number;
-  deletingSpeed: number;
+
   constructor(
     element: HTMLElement,
-    { loop = false, typingSpeed = 50, deletingSpeed = 50 } = {}
+    { 
+      deletingSpeed = 50, 
+      loop = false, 
+      typingSpeed = 50
+    } = {}
   ) {
+    this.deletingSpeed = deletingSpeed;
     this.element = element;
     this.loop = loop;
     this.typingSpeed = typingSpeed;
-    this.deletingSpeed = deletingSpeed;
   }
+
+  typeString(string: string) {
+    return this
+  }
+
+  deleteChars(number: number){
+    return this
+  }
+
+  // We use the default delete speed of the constructor if nothing is passed in
+  deleteAll(deletingSpeed = this.deletingSpeed){
+    return this
+  }
+
+  pauseFor(duration: number){
+    return this
+  }
+
+  start(){
+    return this
+  }
+
 }
