@@ -6,7 +6,7 @@ export default class Typewriter {
   #element: HTMLElement;
   loop: boolean;
   #queue: QueueItem[] = []
-  typingSpeed: number;
+  #typingSpeed: number;
 
   constructor(
     parent: HTMLElement,
@@ -20,28 +20,24 @@ export default class Typewriter {
     parent.append(this.#element)
     this.deletingSpeed = deletingSpeed;
     this.loop = loop;
-    this.typingSpeed = typingSpeed;
+    this.#typingSpeed = typingSpeed;
   }
 
   typeString(string: string) {
-    this.#queue.push(()=>{
-      return new Promise((resolve) =>{
-        let i = 0;
-
-       const interval = setInterval(()=>{
-          this.#element.append(string[i]);
-          i++
-          if(i >= string.length){
-            clearInterval(interval)
-            resolve()
-          }
-        }, this.typingSpeed)
-        this.#element.append(string);
-        resolve()
-      })
+    this.#addToQueue(resolve => {
+      let i = 0
+      const interval = setInterval(() => {
+        this.#element.append(string[i])
+        i++
+        if (i >= string.length) {
+          clearInterval(interval)
+          resolve()
+        }
+      }, this.#typingSpeed)
     })
     return this
   }
+
 
   deleteChars(number: number){
     console.log(number)
@@ -64,6 +60,12 @@ async start() {
     await callBack()
   }
   return this
+}
+
+#addToQueue(callBack: (resolve: ()=> void)=> void){
+  this.#queue.push(()=>{
+    return new Promise(callBack)
+  })
 }
 
 }
