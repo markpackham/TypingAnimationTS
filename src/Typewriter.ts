@@ -82,17 +82,20 @@ export default class Typewriter {
     })
   }
 
-async start() {
-  for(let callBack of this.#queue){
-    await callBack()
-  }
-  return this
-}
 
-#addToQueue(callBack: (resolve: ()=> void)=> void){
-  this.#queue.push(()=>{
-    return new Promise(callBack)
-  })
-}
+  async start() {
+    let callBack = this.#queue.shift()
+    while (callBack != null) {
+      await callBack()
+      if (this.#loop) this.#queue.push(callBack)
+      callBack = this.#queue.shift()
+    }
+    return this
+  }
+
+
+  #addToQueue(callBack: (resolve: () => void) => void) {
+    this.#queue.push(() => new Promise(callBack))
+  }
 
 }
