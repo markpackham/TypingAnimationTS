@@ -2,9 +2,9 @@ type QueueItem = () => Promise<void>
 
 export default class Typewriter {
   
-  deletingSpeed: number;
+  #deletingSpeed: number;
   #element: HTMLElement;
-  loop: boolean;
+  #loop: boolean;
   #queue: QueueItem[] = []
   #typingSpeed: number;
 
@@ -17,9 +17,10 @@ export default class Typewriter {
     } = {}
   ) {
     this.#element = document.createElement("div")
+    this.#element.classList.add("whitespace");
     parent.append(this.#element)
-    this.deletingSpeed = deletingSpeed;
-    this.loop = loop;
+    this.#deletingSpeed = deletingSpeed;
+    this.#loop = loop;
     this.#typingSpeed = typingSpeed;
   }
 
@@ -39,13 +40,26 @@ export default class Typewriter {
   }
 
 
-  deleteChars(number: number){
-    console.log(number)
+  deleteChars(number: number) {
+    this.#addToQueue(resolve => {
+      let i = 0
+      const interval = setInterval(() => {
+        this.#element.innerText = this.#element.innerText.substring(
+          0,
+          this.#element.innerText.length - 1
+        )
+        i++
+        if (i >= number) {
+          clearInterval(interval)
+          resolve()
+        }
+      }, this.#deletingSpeed)
+    })
     return this
   }
 
   // We use the default delete speed of the constructor if nothing is passed in
-  deleteAll(deletingSpeed = this.deletingSpeed){
+  deleteAll(deletingSpeed = this.#deletingSpeed){
     console.log(deletingSpeed)
     return this
   }
