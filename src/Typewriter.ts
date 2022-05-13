@@ -58,10 +58,23 @@ export default class Typewriter {
   }
 
   // We use the default delete speed of the constructor if nothing is passed in
-  deleteAll(deletingSpeed = this.#deletingSpeed){
-    console.log(deletingSpeed)
+  deleteAll(deleteSpeed = this.#deletingSpeed) {
+    this.#addToQueue(resolve => {
+      const interval = setInterval(() => {
+        this.#element.innerText = this.#element.innerText.substring(
+          0,
+          this.#element.innerText.length - 1
+        )
+        if (this.#element.innerText.length === 0) {
+          clearInterval(interval)
+          resolve()
+        }
+      }, deleteSpeed)
+    })
+
     return this
   }
+
 
   pauseFor(duration: number){
     console.log(duration)
