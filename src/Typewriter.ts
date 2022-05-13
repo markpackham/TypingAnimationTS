@@ -1,8 +1,11 @@
+type QueueItem = () => Promise<void>
+
 export default class Typewriter {
   
   deletingSpeed: number;
   element: HTMLElement;
   loop: boolean;
+  #queue: QueueItem[] = []
   typingSpeed: number;
 
   constructor(
@@ -20,6 +23,11 @@ export default class Typewriter {
   }
 
   typeString(string: string) {
+    this.#queue.push(()=>{
+      return new Promise((resolve, reject) =>{
+        resolve()
+      })
+    })
     return this
   }
 
@@ -36,8 +44,11 @@ export default class Typewriter {
     return this
   }
 
-  start(){
-    return this
+async start() {
+  for(let cb of this.#queue){
+    await cb()
   }
+  return this
+}
 
 }
