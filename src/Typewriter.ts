@@ -77,8 +77,9 @@ export default class Typewriter {
 
 
   pauseFor(duration: number){
-    console.log(duration)
-    return this
+    this.#addToQueue(resolve => {
+      setTimeout(resolve,duration)
+    })
   }
 
 async start() {
